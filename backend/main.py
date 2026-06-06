@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import mysql.connector
+import os
 
 app = FastAPI()
 
@@ -16,10 +17,10 @@ app.add_middleware(
 
 def get_conn():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="12345678",
-        database="payroll_db"
+        host=os.environ.get("DB_HOST", "localhost"),
+        user=os.environ.get("DB_USER", "root"),
+        password=os.environ.get("DB_PASSWORD", "12345678"),
+        database=os.environ.get("DB_NAME", "payroll_db")
     )
 
 class FullTimeEmployee(BaseModel):
@@ -32,6 +33,10 @@ class PartTimeEmployee(BaseModel):
     id:int
     hoursWorked:int
     hourlyRate:float
+
+@app.get("/")
+def root():
+    return {"status": "API is running"}
 
 @app.get("/employees")
 def employees():
