@@ -1,5 +1,5 @@
 
-const API="http://localhost:8000";
+const API="https://employee-payroll-fast-oyrje46w6-ithishree-dashs-projects.vercel.app";
 
 async function addFT(){
  await fetch(API+"/employees/fulltime",{
